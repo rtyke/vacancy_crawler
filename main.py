@@ -49,6 +49,7 @@ if __name__ == '__main__':
             if vacancy_page:
                 save_to_json(vacancy_page)
             else:
+                # TODO get page number. Does generator have attributes?
                 print(f'No content on page')
     except Exception:
         sys.exit('Failed connection')
