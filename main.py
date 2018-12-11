@@ -26,12 +26,15 @@ def extract_vacancies_from_response_data(response_data) -> List[Dict]:
     return vacancies_attrs
 
 
-def scrape_vacancies(page_number):
-    vacancies_response = request_page_with_vacancies(page_number=page_number)
-    if not vacancies_response:
-        raise Exception('Failed connection')
-    vacancies = extract_vacancies_from_response_data(vacancies_response)
-    return vacancies
+def scrape_vacancies():
+    page_counter = 0
+    while page_counter < 6:
+        vacancies_response = request_page_with_vacancies(page_number=page_counter)
+        if not vacancies_response:
+            raise Exception('Failed connection')
+        page_counter += 1
+        print(page_counter)
+        yield extract_vacancies_from_response_data(vacancies_response)
 
 
 def save_to_json(data: List[Dict]) -> None:
@@ -41,15 +44,11 @@ def save_to_json(data: List[Dict]) -> None:
 
 
 if __name__ == '__main__':
-    page_counter = 0
-    while page_counter < 6:
-        try:
-            vacancies_attrs = scrape_vacancies(page_number=page_counter)
-        except Exception:
-            sys.exit('Failed connection')
-        else:
-            page_counter += 1
-            if vacancies_attrs:
-                save_to_json(vacancies_attrs)
+    try:
+        for vacancy_page in scrape_vacancies():
+            if vacancy_page:
+                save_to_json(vacancy_page)
             else:
-                print(f'No content on page {page_counter - 1}')
+                print(f'No content on page')
+    except Exception:
+        sys.exit('Failed connection')
