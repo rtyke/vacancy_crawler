@@ -21,12 +21,9 @@ def request_page_with_vacancies(page_number=0):
         return response
 
 
-def extract_vacancies_from_response_data(response_data):
+def extract_vacancies_from_response_data(response_data) -> List[Dict]:
     vacancies_attrs = response_data.json()['objects']
-    if vacancies_attrs:
-        return vacancies_attrs
-    else:
-        return None
+    return vacancies_attrs
 
 
 def scrape_vacancies(page_number):
@@ -38,14 +35,14 @@ def scrape_vacancies(page_number):
 
 
 def save_to_json(data: List[Dict]) -> None:
-    json_name = '{:.3f}.json'.format(time.time())
+    json_name = '{}.json'.format(time.time())
     with open(json_name, 'w') as fo:
         json.dump(data, fo, ensure_ascii=False)
 
 
 if __name__ == '__main__':
     page_counter = 0
-    while page_counter < 6:  #
+    while page_counter < 6:
         try:
             vacancies_attrs = scrape_vacancies(page_number=page_counter)
         except Exception:
