@@ -11,9 +11,9 @@ SECRET_KEY = os.environ['KEY']
 HEADERS = {'X-Api-App-Id': SECRET_KEY}
 
 
-def request_page_with_vacancies(page_number=0):
+def request_page_with_vacancies(since_date: int, page_number: int):
     vacancies_url = 'https://api.superjob.ru/2.0/vacancies/'
-    params = {'count': 100, 'page': page_number}
+    params = {'count': 100, 'page': page_number, 'date_published_from': since_date}
     response = requests.get(vacancies_url, headers=HEADERS, params=params)
     if response.status_code != 200:
         return False
@@ -26,10 +26,12 @@ def extract_vacancies_from_response_data(response_data) -> List[Dict]:
     return vacancies_attrs
 
 
-def scrape_vacancies():
-    # TODO get only new vacancies with key 'date_published'
+def scrape_vacancies(since_date):
     for page_number in range(6):
-        vacancies_response = request_page_with_vacancies(page_number=page_number)
+        vacancies_response = request_page_with_vacancies(
+            since_date=since_date,
+            page_number=page_number,
+        )
         if not vacancies_response:
             raise Exception('Failed connection')
         yield extract_vacancies_from_response_data(vacancies_response)
@@ -43,7 +45,7 @@ def save_to_json(data: List[Dict]) -> None:
 
 def main():
     try:
-        for vacancies_page in scrape_vacancies():
+        for vacancies_page in scrape_vacancies(since_date=1544630400):
             if vacancies_page:
                 save_to_json(vacancies_page)
             else:
