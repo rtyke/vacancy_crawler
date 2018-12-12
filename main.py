@@ -42,9 +42,9 @@ def save_to_json(data: List[Dict]) -> None:
 
 def main():
     try:
-        for vacancy_page in scrape_vacancies():
-            if vacancy_page:
-                save_to_json(vacancy_page)
+        for vacancies_page in scrape_vacancies():
+            if vacancies_page:
+                save_to_json(vacancies_page)
             else:
                 # TODO get page number. Does generator have attributes?
                 print(f'No content on page')
