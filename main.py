@@ -40,7 +40,7 @@ def save_to_json(data: List[Dict]) -> None:
         json.dump(data, fo, ensure_ascii=False)
 
 
-if __name__ == '__main__':
+def main():
     try:
         for vacancy_page in scrape_vacancies():
             if vacancy_page:
@@ -50,3 +50,7 @@ if __name__ == '__main__':
                 print(f'No content on page')
     except Exception:
         sys.exit('Failed connection')
+
+
+if __name__ == '__main__':
+    main()
