@@ -27,6 +27,7 @@ def extract_vacancies_from_response_data(response_data) -> List[Dict]:
 
 
 def scrape_vacancies():
+    # TODO get only new vacancies with key 'date_published'
     for page_number in range(6):
         vacancies_response = request_page_with_vacancies(page_number=page_number)
         if not vacancies_response:
