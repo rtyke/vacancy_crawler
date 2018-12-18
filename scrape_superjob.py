@@ -1,18 +1,23 @@
+import datetime
+import time
 from typing import Dict, List
-import requests
 import os
+
+import requests
+
 
 SECRET_KEY = os.environ['KEY']
 
 HEADERS = {'X-Api-App-Id': SECRET_KEY}
 
 
-def request_page_with_vacancies(since_date: int, page_number: int):
+# def request_page_with_vacancies(since_date: int, page_number: int):
+def request_page_with_vacancies(till_date: int):
     vacancies_url = 'https://api.superjob.ru/2.0/vacancies/'
     params = {
         'count': 100,
-        'page': page_number,
-        'date_published_from': since_date
+        'page': 0,
+        'date_published_to': till_date,
     }
     try:
         response = requests.get(vacancies_url, headers=HEADERS, params=params)
@@ -23,26 +28,33 @@ def request_page_with_vacancies(since_date: int, page_number: int):
         return False
 
 
-def scrape_vacancies(since_date: int) -> List[Dict]:
-    vacancies_all = []
-    for page_number in range(6):
-        response = request_page_with_vacancies(
-            since_date=since_date,
-            page_number=page_number,
+def scrape_vacancies(till_date: int):
+    page_with_vacancies = request_page_with_vacancies(till_date)
+    if page_with_vacancies:
+        vacancies_on_page = page_with_vacancies.json().get('objects')
+        if not vacancies_on_page:
+            return False
+        valid_vacancies = filter(
+            lambda x: x['date_published'] < till_date, vacancies_on_page
         )
-        if response:
-            vacancies_on_page = response.json().get('objects', [])
-            vacancies_all.extend(vacancies_on_page)
-    return vacancies_all
+        return list(valid_vacancies)
+
+
+def get_unixtime_halfhour_back():
+    halfhour_back = datetime.datetime.today() - datetime.timedelta(minutes=30)
+    return int(time.mktime(halfhour_back.timetuple()))
 
 
 def main():
-    vacancies_all = scrape_vacancies(since_date=1544630400)
+    halfhour_back = get_unixtime_halfhour_back()
+    print(halfhour_back)
+    vacancies_all = scrape_vacancies(till_date=halfhour_back)
     if not vacancies_all:
-        print('No vacancies for date 1544630400')
+        print(f'No vacancies for date {halfhour_back}')
     else:
+        print(len(vacancies_all))
         for vacancy in vacancies_all:
-            print(vacancy)
+            print(vacancy, end='\n\n')
 
 
 if __name__ == '__main__':
