@@ -28,6 +28,10 @@ def request_page_with_vacancies(till_date: int):
         return False
 
 
+def get_earliest_timestamp(vacancies_all: List[Dict]) -> int:
+    return min([vacancy['date_published'] for vacancy in vacancies_all])
+
+
 def scrape_vacancies(till_date: int):
     page_with_vacancies = request_page_with_vacancies(till_date)
     if page_with_vacancies:
@@ -49,12 +53,14 @@ def main():
     halfhour_back = get_unixtime_halfhour_back()
     print(halfhour_back)
     vacancies_all = scrape_vacancies(till_date=halfhour_back)
+    earliest_timestamp = get_earliest_timestamp(vacancies_all)
+    print(f'earliest:{earliest_timestamp}')
     if not vacancies_all:
         print(f'No vacancies for date {halfhour_back}')
     else:
         print(len(vacancies_all))
         for vacancy in vacancies_all:
-            print(vacancy, end='\n\n')
+            print(vacancy['date_published'])
 
 
 if __name__ == '__main__':
