@@ -42,6 +42,7 @@ def scrape_vacancies(till_date: int):
             lambda x: x['date_published'] < till_date, vacancies_on_page
         )
         return list(valid_vacancies)
+    return False
 
 
 def get_unixtime_halfhour_back():
