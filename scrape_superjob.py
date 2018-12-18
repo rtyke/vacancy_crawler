@@ -16,6 +16,7 @@ def request_page_with_vacancies(since_date: int, page_number: int):
     }
     try:
         response = requests.get(vacancies_url, headers=HEADERS, params=params)
+        response.raise_for_status()
         return response
     except requests.RequestException:
         print('Connection error')
