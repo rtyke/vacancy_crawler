@@ -76,6 +76,7 @@ def get_oldest_date():
     json_folder = os.path.join(os.getcwd(), 'jsons')
     newest_file = max(os.listdir(json_folder))
     with open(os.path.join(json_folder, newest_file)) as fo:
+        print(newest_file)
         vacancies = json.load(fo)
     return define_oldest_vacancy_timestamp(vacancies)
 
@@ -103,6 +104,14 @@ def scrape_new_vacancies(from_date):
     return vacancies_new
 
 
+def get_vacancy_by_id(id):
+    url = 'https://api.superjob.ru/2.0/vacancies/'
+    params = {'ids': [31691230], 'count': 1}
+    print(url)
+    response = requests.get(url, headers=HEADERS, params=params)
+    print(json.dumps(response.json(), indent=4, ensure_ascii=False))
+
+
 def main():
     # for the first launch:
     # vacancies_last_month = get_last_month_vacancies()
@@ -112,9 +121,11 @@ def main():
     from_date = get_oldest_date()
     vacancies_all = scrape_new_vacancies(from_date=from_date)
     if not vacancies_all:
-        print(f'No vacancies for date {from_date}')
+        return f'No vacancies for date {from_date}'
+        # print(f'No vacancies for date {from_date}')
     else:
-        save_to_json(vacancies_all)
+        return vacancies_all
+        # save_to_json(vacancies_all)
 
 
 if __name__ == '__main__':
