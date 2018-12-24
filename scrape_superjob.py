@@ -1,10 +1,11 @@
-import datetime
 import json
-import time
 from typing import Dict, List
 import os
 
 import requests
+
+from utils import get_unixtime_month_back, get_unixtime_halfhour_back
+from data_handling_json import grab_newest_file_content, save_to_json
 
 
 SECRET_KEY = os.environ['KEY']
@@ -46,41 +47,6 @@ def define_oldest_vacancy_timestamp(vacancies_all: List[Dict]) -> int:
     return min([vacancy['date_published'] for vacancy in vacancies_all])
 
 
-def unixtime_from_datetime(date_to_convert):
-    # TODO move to another module
-    return int(time.mktime(date_to_convert.timetuple()))
-
-
-def get_unixtime_halfhour_back():
-    # TODO move to another module
-    halfhour_back = datetime.datetime.today() - datetime.timedelta(minutes=30)
-    return unixtime_from_datetime(halfhour_back)
-
-
-def get_unixtime_month_back():
-    # TODO move to another module
-    month_back = datetime.datetime.today() - datetime.timedelta(days=30)
-    return unixtime_from_datetime(month_back)
-
-
-def save_to_json(data_to_save):
-    json_name = f'{int(time.time())}.json'
-    json_folder = os.path.join(os.getcwd(), 'jsons')
-    if not os.path.exists(json_folder):
-        os.mkdir(json_folder)
-    with open(os.path.join(json_folder, json_name), 'w') as fo:
-        json.dump(data_to_save, fo, ensure_ascii=False)
-
-
-def get_oldest_date():
-    json_folder = os.path.join(os.getcwd(), 'jsons')
-    newest_file = max(os.listdir(json_folder))
-    with open(os.path.join(json_folder, newest_file)) as fo:
-        print(newest_file)
-        vacancies = json.load(fo)
-    return define_oldest_vacancy_timestamp(vacancies)
-
-
 def get_last_month_vacancies():
     month_back = get_unixtime_month_back()
     halfhour_back = get_unixtime_halfhour_back()
@@ -105,29 +71,39 @@ def scrape_new_vacancies(from_date):
 
 
 def get_vacancy_by_id(id):
+    """
+    Doesn't work properly because of vague SuperJob API
+    """
     url = 'https://api.superjob.ru/2.0/vacancies/'
-    params = {'ids': [31691230], 'count': 1}
-    print(url)
+    params = {'id_vacancy': id}
     response = requests.get(url, headers=HEADERS, params=params)
     print(json.dumps(response.json(), indent=4, ensure_ascii=False))
 
 
-def main():
-    # for the first launch:
-    # vacancies_last_month = get_last_month_vacancies()
-    # for vacancies_chunk in vacancies_last_month:
-    #     save_to_json(vacancies_chunk)
-    # for the next launches:
-    from_date = get_oldest_date()
+def launch_first_time():
+    # TODO move to main.py
+    """
+    Use this function for the first launch of the script.
+    """
+    vacancies_last_month = get_last_month_vacancies()
+    for vacancies_chunk in vacancies_last_month:
+        save_to_json(vacancies_chunk)
+
+
+def update_data():
+    # TODO move to main.py
+    """
+    Use this function only if you've doanloaded vacany data already and you
+    need update.
+    """
+    from_date = define_oldest_vacancy_timestamp(grab_newest_file_content())
     vacancies_all = scrape_new_vacancies(from_date=from_date)
     if not vacancies_all:
         return f'No vacancies for date {from_date}'
-        # print(f'No vacancies for date {from_date}')
     else:
         return vacancies_all
-        # save_to_json(vacancies_all)
 
 
 if __name__ == '__main__':
-    main()
+    launch_first_time()
 

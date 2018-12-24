@@ -22,11 +22,11 @@ def get_job_description(vacancy):
     return description
 
 
-def get_experience(vacancy):
-    if vacancy['experience']:
-        return vacancy['experience']['title']
-    else:
-        return None
+# def get_experience(vacancy):
+#     if vacancy['experience']:
+#         return vacancy['experience']['title']
+#     else:
+#         return None
 
 
 def get_metro(vacancy):
@@ -47,20 +47,20 @@ def main():
         print(vacancy_new['experience'])
         salary=1000000  #TODO this!
         vacancy_in_db = Vacancy(
-            id=vacancy_new['id'],
+            vid=vacancy_new['id'],
             title=vacancy_new['profession'],
             unixtime=vacancy_new['date_published'],
             description=get_job_description(vacancy_new),
             address=vacancy_new['address'],
             metro=get_metro(vacancy_new),
             type_of_work=vacancy_new['type_of_work']['title'],
-            experience=get_experience(vacancy_new),
+            experience=vacancy_new['experience']['title'],
             salary=salary,
             specializations=json.dumps(vacancy_new['catalogues'], ensure_ascii=False),  #TODO discuss this
             is_archive=vacancy_new['is_archive']
         )
         session.add(vacancy_in_db)
-    #
+
     session.commit()
     session.close()
 

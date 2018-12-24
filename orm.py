@@ -6,11 +6,12 @@ Base = declarative_base()
 engine = create_engine('sqlite:///vacancies_db.db')
 Session = sessionmaker(bind=engine)
 
+
 class Vacancy(Base):
     __tablename__ = 'vacancies'
     id_pk = Column(Integer, primary_key=True)
     hash = None  # how to create?
-    id = Column('id', Integer)
+    vid = Column('id', Integer)
     title = Column('title', String)
     unixtime = Column('unixtime', Integer)
     description = Column('date', String)
@@ -22,9 +23,9 @@ class Vacancy(Base):
     specializations = Column('specializations', String)
     is_archive = Column('is_archive', Boolean)
 
-    def __init__(self, id, title, unixtime, description, address, metro,
+    def __init__(self, vid, title, unixtime, description, address, metro,
                  type_of_work, experience, salary, specializations, is_archive):
-        self.id = id
+        self.vid = vid
         self.title = title
         self.unixtime = unixtime
         self.description = description
