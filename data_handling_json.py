@@ -15,11 +15,11 @@ def grab_newest_file_content() -> List[Dict]:
     Name of files are time creation in unixtime
     """
     newest_file = max(os.listdir(JSON_DIR))
-    file_content = load_json(JSON_DIR, newest_file)
+    file_content = load_from_json(JSON_DIR, newest_file)
     return file_content
 
 
-def load_json(file_path, filename):
+def load_from_json(file_path, filename):
     with open(os.path.join(file_path, filename)) as fo:
         return json.load(fo)
 

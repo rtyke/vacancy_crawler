@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -14,7 +16,7 @@ class Vacancy(Base):
     vid = Column('id', Integer)
     title = Column('title', String)
     unixtime = Column('unixtime', Integer)
-    description = Column('date', String)
+    description = Column('description', String)
     address = Column('address', String)
     metro = Column('metro', String)
     type_of_work = Column('type_of_work', String)
@@ -22,9 +24,11 @@ class Vacancy(Base):
     salary = Column('salary', Integer)
     specializations = Column('specializations', String)
     is_archive = Column('is_archive', Boolean)
+    update_time = Column('update_time', Integer)
 
     def __init__(self, vid, title, unixtime, description, address, metro,
-                 type_of_work, experience, salary, specializations, is_archive):
+                 type_of_work, experience, salary, specializations, is_archive,
+                 update_time):
         self.vid = vid
         self.title = title
         self.unixtime = unixtime
@@ -36,4 +40,4 @@ class Vacancy(Base):
         self.salary = salary
         self.specializations = specializations
         self.is_archive = is_archive
-
+        self.update_time = update_time
