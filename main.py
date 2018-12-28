@@ -9,7 +9,7 @@ from utils import get_unixtime_several_days_back, get_unixtime_several_mins_back
 from orm import Session
 
 
-def define_time_period(session):
+def define_init_period(session):
     if os.environ['RUN'] == 'new':
         period_start = get_unixtime_several_days_back(days=2)
         period_end = get_unixtime_several_mins_back(minutes=2)
@@ -17,29 +17,34 @@ def define_time_period(session):
         period_start = get_newest_timestamp(session)
         period_end = get_unixtime_several_mins_back(minutes=2)
     else:
-        return None, None
+        return None
+    return period_start, period_end
+
+
+def slide_period(scraping_period, vacancies):
+    period_start, period_end = scraping_period
+    log(f'Change upper date  {strtime_from_unixtime(period_end)}')
+    period_end = define_oldest_vacancy_timestamp(vacancies)
     return period_start, period_end
 
 
 def main():
     session = Session()
-    scrape_since, scrape_until = define_time_period(session)
-    if not scrape_since:
+    scraping_period = define_init_period(session)
+    if not scraping_period:
         sys.exit('Please specify type of scrapping in RUN key: "new" or "update"')
     create_dbase()
     while True:
-        vacancies_raw = request_vacancies_page(scrape_since, scrape_until)
+        vacancies_raw = request_vacancies_page(scraping_period)
         if not vacancies_raw:
             sys.exit('Connection error')
         vacancies_parsed = parse_vacancies(vacancies_raw)
         if not vacancies_parsed:
             log('FINISHED\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
             break
-        log(f'Change upper date  {strtime_from_unixtime(scrape_until)} to:')
-        scrape_until = define_oldest_vacancy_timestamp(vacancies_parsed)
         for vacancy in vacancies_parsed:
             put_vacancy_to_db(session, vacancy)
-        session.commit()
+        scraping_period = slide_period(scraping_period, vacancies_parsed)
     session.close()
 
 

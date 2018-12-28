@@ -7,13 +7,14 @@ from scriber import log
 from utils import strtime_from_unixtime
 
 
-# SECRET_KEY = os.environ['KEY']
-SECRET_KEY = 'v1.r07af662aed8eb82c8ce492dc02187f2c175d3fe0bf2bce65f7ac1928428ff0b4046f3a48.d926539b8ea9ba66a2181b41fedfaf0c6ded2e83'
+SECRET_KEY = os.environ['KEY']
+
 
 HEADERS = {'X-Api-App-Id': SECRET_KEY}
 
 
-def request_vacancies_page(from_date: int, until_date: int):
+def request_vacancies_page(scraping_period):
+    from_date, until_date = scraping_period
     log(f'Get vacancies till {strtime_from_unixtime(until_date)} since {strtime_from_unixtime(from_date)}')
     vacancies_url = 'https://api.superjob.ru/2.0/vacancies/'
     params = {

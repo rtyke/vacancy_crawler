@@ -35,6 +35,7 @@ def put_vacancy_to_db(session, vacancy):
         update_time=int(time.time()),
     )
     session.add(vacancy_orm)
+    session.commit()
 
 
 
