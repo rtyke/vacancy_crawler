@@ -9,11 +9,6 @@ def create_dbase():
     Base.metadata.create_all(bind=engine)
 
 
-def get_oldest_timestamp(session):
-    timestamps = session.query(Vacancy.unixtime).all()
-    return str(min(timestamps)[0])
-
-
 def get_newest_timestamp(session):
     timestamps = session.query(Vacancy.unixtime).all()
     return str(max(timestamps)[0])
