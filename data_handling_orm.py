@@ -2,7 +2,7 @@ import json
 import time
 
 from orm import Vacancy, Salary, Session, engine, Base
-from scrape_superjob import get_job_description
+from scrape_superjob import get_job_description, get_first_metro_station
 
 
 def create_dbase():
@@ -21,7 +21,9 @@ def put_vacancy_to_db(session, vacancy):
         unixtime=vacancy['date_published'],
         description=get_job_description(vacancy),
         address=vacancy['address'],
-        metro=json.dumps(vacancy['metro'], ensure_ascii=False),
+        # metro=json.dumps(vacancy['metro'], ensure_ascii=False),
+        town=vacancy['town']['title'],
+        metro=get_first_metro_station(vacancy),
         type_of_work=vacancy['type_of_work']['title'],
         experience=vacancy['experience']['title'],
         # salary=1000000,  # TODO discuss this

@@ -48,3 +48,10 @@ def get_job_description(vacancy):
         if vacancy[el]:
             vacancy_description.append(str(vacancy[el]))
     return ' '.join(vacancy_description)
+
+
+def get_first_metro_station(vacancy):
+    if vacancy['metro']:
+        return vacancy['metro'][0]['title']
+    else:
+        return None

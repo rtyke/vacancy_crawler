@@ -17,6 +17,7 @@ class Vacancy(Base):
     unixtime = Column('unixtime', Integer)
     description = Column('description', String)
     address = Column('address', String)
+    town = Column('town', String)
     metro = Column('metro', String)
     type_of_work = Column('type_of_work', String)
     experience = Column('experience', String)
@@ -26,7 +27,7 @@ class Vacancy(Base):
     is_archive = Column('is_archive', Boolean)
     update_time = Column('update_time', Integer)
 
-    def __init__(self, site_id, title, unixtime, description, address, metro,
+    def __init__(self, site_id, title, unixtime, description, address, town, metro,
                  type_of_work, experience, specializations, is_archive,
                  update_time):
         self.site_id = site_id
@@ -34,6 +35,7 @@ class Vacancy(Base):
         self.unixtime = unixtime
         self.description = description
         self.address = address
+        self.town = town
         self.metro = metro
         self.type_of_work = type_of_work
         self.experience = experience
