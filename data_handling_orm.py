@@ -16,7 +16,7 @@ def get_newest_timestamp(session):
 
 def put_vacancy_to_db(session, vacancy):
     vacancy_orm = Vacancy(
-        vid=vacancy['id'],
+        vacancy_id=vacancy['id'],
         title=vacancy['profession'],
         unixtime=vacancy['date_published'],
         description=get_job_description(vacancy),

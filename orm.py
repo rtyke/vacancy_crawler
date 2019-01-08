@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
-engine = create_engine('sqlite:///vacancies_db.db')
+engine = create_engine('sqlite:///vacancies_db.db', echo=True)
 Session = sessionmaker(bind=engine)
 
 
@@ -13,7 +13,7 @@ class Vacancy(Base):
     __tablename__ = 'vacancies'
     id_pk = Column(Integer, primary_key=True)
     hash = None  # how to create?
-    vid = Column('id', Integer)
+    vacancy_id = Column('id', Integer)
     title = Column('title', String)
     unixtime = Column('unixtime', Integer)
     description = Column('description', String)
@@ -26,10 +26,10 @@ class Vacancy(Base):
     is_archive = Column('is_archive', Boolean)
     update_time = Column('update_time', Integer)
 
-    def __init__(self, vid, title, unixtime, description, address, metro,
+    def __init__(self, vacancy_id, title, unixtime, description, address, metro,
                  type_of_work, experience, salary, specializations, is_archive,
                  update_time):
-        self.vid = vid
+        self.vacancy_id = vacancy_id
         self.title = title
         self.unixtime = unixtime
         self.description = description
