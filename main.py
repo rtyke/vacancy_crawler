@@ -24,6 +24,8 @@ def define_init_period(session):
 def slide_period(scraping_period, vacancies):
     """Move upper period boundary to the value equal to the timestamp of the
     last found vacancy."""
+    if not vacancies:  # for cases when key 'total' = 0
+        return None
     period_start, period_end = scraping_period
     log(f'Change upper date  {strtime_from_unixtime(period_end)}')
     period_end = define_oldest_vacancy_timestamp(vacancies)
