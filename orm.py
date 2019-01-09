@@ -12,12 +12,12 @@ class Vacancy(Base):
     __tablename__ = 'vacancies'
     pk = Column(Integer, primary_key=True)
     # hash = None  # how to create?
-    site_id = Column('site_id', Integer)
-    title = Column('title', String)
+    id_on_site = Column('site_id', Integer, unique=True)
+    title = Column('title', String, nullable=False)
     unixtime = Column('unixtime', Integer)
     description = Column('description', String)
     address = Column('address', String)
-    town = Column('town', String)
+    town = Column('town', String, nullable=False)
     metro = Column('metro', String)
     type_of_work = Column('type_of_work', String)
     experience = Column('experience', String)
@@ -26,13 +26,13 @@ class Vacancy(Base):
     specializations = Column('specializations', String)
     is_archive = Column('is_archive', Boolean)
     update_time = Column('update_time', Integer)
-    url =  Column('url', String)
+    url = Column('url', String, unique=True)
     source = Column('source', String, default='SuperJob')
 
     def __init__(self, site_id, title, unixtime, description, address, town, metro,
                  type_of_work, experience, specializations, is_archive,
                  update_time, url):
-        self.site_id = site_id
+        self.id_on_site = site_id
         self.title = title
         self.unixtime = unixtime
         self.description = description
