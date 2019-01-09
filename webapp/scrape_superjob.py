@@ -1,16 +1,14 @@
 from typing import Dict, List
-import os
 
 import requests
 
-from scriber import log
-from utils import strtime_from_unixtime
+from flask import current_app
+from webapp.scriber import log
+from webapp.utils import strtime_from_unixtime
 
-
-SECRET_KEY = os.environ['KEY']
-
-
-HEADERS = {'X-Api-App-Id': SECRET_KEY}
+# SECRET_KEY = os.environ['KEY']
+# SECRET_KEY = current_app.config['SJ_API_KEY']
+# HEADERS = {'X-Api-App-Id': SECRET_KEY}
 
 
 def request_vacancies_page(scraping_period):
@@ -24,6 +22,7 @@ def request_vacancies_page(scraping_period):
         'date_published_to': until_date,
     }
     try:
+        HEADERS = {'X-Api-App-Id': current_app.config['SJ_API_KEY']}
         response = requests.get(vacancies_url, headers=HEADERS, params=params)
         response.raise_for_status()
         return response

@@ -1,11 +1,19 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship, backref
+# from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, relationship, backref, scoped_session
 
-Base = declarative_base()
-engine = create_engine('sqlite:///vacancies_db.db', echo=True)
-# engine = create_engine('sqlite:///new.db', echo=True)
-Session = sessionmaker(bind=engine)
+
+from webapp.database import Base
+
+# engine = create_engine('sqlite:///tezt_db.db', echo=True)
+# # engine = create_engine('sqlite:///new.db', echo=True)
+# db_session = scoped_session(sessionmaker(autocommit=False,
+#                                          autoflush=False,
+#                                          bind=engine))
+# Base = declarative_base()
+# Base.query = db_session.query_property()
+#
+# Session = sessionmaker(bind=engine)
 
 
 class Vacancy(Base):

@@ -1,6 +1,9 @@
 .*
 !.gitignore
 temp
+temp.py
 try.py
 *.json
 *.log
+config.py
+*.db

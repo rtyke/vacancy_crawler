@@ -1,12 +1,13 @@
 import json
 import time
 
-from orm import Vacancy, Salary, Session, engine, Base
-from scrape_superjob import get_job_description, get_first_metro_station
+# from webapp.models import Vacancy, Salary, Session, engine, Base
+from webapp.models import Vacancy, Salary, Base
+from webapp.scrape_superjob import get_job_description, get_first_metro_station
 
 
-def create_dbase():
-    Base.metadata.create_all(bind=engine)
+# def create_dbase():
+#     Base.metadata.create_all(bind=engine)
 
 
 def get_newest_timestamp(session):
