@@ -30,6 +30,7 @@ def put_vacancy_to_db(session, vacancy):
         specializations=json.dumps(vacancy['catalogues'], ensure_ascii=False),  # TODO discuss this
         is_archive=vacancy['is_archive'],
         update_time=int(time.time()),
+        url=vacancy['link']
     )
     salary_orm = Salary(
         agreement=vacancy['agreement'],

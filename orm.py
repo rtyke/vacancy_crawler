@@ -26,10 +26,12 @@ class Vacancy(Base):
     specializations = Column('specializations', String)
     is_archive = Column('is_archive', Boolean)
     update_time = Column('update_time', Integer)
+    url =  Column('url', String)
+    source = Column('source', String, default='SuperJob')
 
     def __init__(self, site_id, title, unixtime, description, address, town, metro,
                  type_of_work, experience, specializations, is_archive,
-                 update_time):
+                 update_time, url):
         self.site_id = site_id
         self.title = title
         self.unixtime = unixtime
@@ -43,6 +45,7 @@ class Vacancy(Base):
         self.specializations = specializations
         self.is_archive = is_archive
         self.update_time = update_time
+        self.url = url
 
 
 class Salary(Base):
