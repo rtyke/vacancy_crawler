@@ -22,8 +22,9 @@ class Vacancy(Base):
     # hash = None  # how to create?
     id_on_site = Column('id_on_site', Integer, unique=True)
     title = Column('title', String, nullable=False)
-    published_date = Column('unixtime', Integer)
+    published_date = Column('published_date', Integer)
     description = Column('description', String)
+    firm = Column('firm', String)
     address = Column('address', String)
     town = Column('town', String, nullable=False)
     metro = Column('metro', String)
@@ -35,13 +36,14 @@ class Vacancy(Base):
     url = Column('url', String, unique=True)
     source = Column('source', String, default='SuperJob')
 
-    def __init__(self, id_on_site, title, published_date, description, address, town, metro,
-                 type_of_work, experience, specializations, is_archive,
-                 added_to_db_at, url):
+    def __init__(self, id_on_site, title, published_date, description, firm,
+                 address, town, metro, type_of_work, experience, specializations,
+                 is_archive, added_to_db_at, url):
         self.id_on_site = id_on_site
         self.title = title
         self.published_date = published_date
         self.description = description
+        self.firm = firm
         self.address = address
         self.town = town
         self.metro = metro
