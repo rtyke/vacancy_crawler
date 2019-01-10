@@ -14,8 +14,8 @@ python create_db.py
 
 6. Получить обновления за послдение 20 дней
 python get_vacancies_all.py
-Это займет около 30 минут! Можно сократить срок, за который получашеь обновления изменив срок обновления в файле webapp/gather_resumes_sj.py:
-period_start = get_unixtime_several_days_back(days=20)
+Это займет около 30 минут! Можно сократить срок, за который получашеь обновления изменив срок обновления в файле webapp/config.py:
+INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS
 
 7. Получать обновления:
 python get_vacancies_updates.py

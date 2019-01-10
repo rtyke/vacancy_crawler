@@ -1,5 +1,6 @@
 import sys
 
+from flask import current_app
 from webapp.database import db_session
 from webapp.scriber import log
 from webapp.scrape_superjob import request_vacancies_page, parse_vacancies, define_oldest_vacancy_timestamp
@@ -10,7 +11,9 @@ from webapp.utils import get_unixtime_several_days_back, get_unixtime_several_mi
 def define_init_period(session, run='new'):
     # run = os.environ['RUN']
     if run == 'new':
-        period_start = get_unixtime_several_days_back(days=20)
+        update_for_x_days = current_app.config['INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS']
+        period_start = get_unixtime_several_days_back(days=update_for_x_days)
+        # period_start = get_unixtime_several_days_back(days=20)
         period_end = get_unixtime_several_mins_back(minutes=10)
     elif run == 'update':
         period_start = get_newest_timestamp(session)
