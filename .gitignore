@@ -5,5 +5,5 @@ temp.py
 try.py
 *.json
 *.log
-config.py
+api_key.py
 *.db
