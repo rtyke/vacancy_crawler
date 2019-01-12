@@ -6,10 +6,6 @@ from flask import current_app
 from webapp.scriber import log
 from webapp.utils import strtime_from_unixtime
 
-# SECRET_KEY = os.environ['KEY']
-# SECRET_KEY = current_app.config['SJ_API_KEY']
-# HEADERS = {'X-Api-App-Id': SECRET_KEY}
-
 
 def request_vacancies_page(scraping_period):
     from_date, until_date = scraping_period
