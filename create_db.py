@@ -1,5 +1,5 @@
 from webapp import create_app
-from webapp.database import init_db
+from webapp.models import init_db
 
 app = create_app()
 

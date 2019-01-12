@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 
-from webapp.database import db_session
-from webapp.models import Vacancy
+from webapp.models import Vacancy, db_session
 from webapp.utils import strtime_from_unixtime
 
 

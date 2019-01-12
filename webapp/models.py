@@ -1,8 +1,18 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
+# FROM DATABASE
+# from webapp.database import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-from webapp.database import Base
+engine = create_engine('sqlite:///test12.01.2019.db', echo=False)
+db_session = scoped_session(sessionmaker(autocommit=False,
+                                         autoflush=False,
+                                         bind=engine))
+Base = declarative_base()
+Base.query = db_session.query_property()
 
 
 class Vacancy(Base):
@@ -60,3 +70,7 @@ class Salary(Base):
         self.payment_to = payment_to
         self.currency = currency
         self.vacancy = vacancy
+
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
