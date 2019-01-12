@@ -2,9 +2,9 @@ import sys
 
 from flask import current_app
 from webapp.database import db_session
-from webapp.scriber import log
 from webapp.scrape_superjob import request_vacancies_page, parse_vacancies, define_oldest_vacancy_timestamp
 from webapp.data_handling_orm import get_newest_timestamp, put_vacancy_to_db
+from webapp.scriber import log
 from webapp.utils import get_unixtime_several_days_back, get_unixtime_several_mins_back, strtime_from_unixtime
 
 
