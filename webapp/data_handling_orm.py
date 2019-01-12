@@ -2,12 +2,26 @@ import json
 import time
 
 from webapp.models import Vacancy, Salary
-from webapp.scrape_superjob import get_job_description, get_first_metro_station
 
 
 def get_newest_timestamp(session):
     timestamps = session.query(Vacancy.published_date).all()
     return str(max(timestamps)[0])
+
+
+def get_job_description(vacancy):
+    vacancy_description = []
+    for el in ('work', 'candidat', 'compensation'):
+        if vacancy[el]:
+            vacancy_description.append(str(vacancy[el]))
+    return ' '.join(vacancy_description)
+
+
+def get_first_metro_station(vacancy):
+    if vacancy['metro']:
+        return vacancy['metro'][0]['title']
+    else:
+        return None
 
 
 def put_vacancy_to_db(session, vacancy):

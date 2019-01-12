@@ -1,5 +1,3 @@
-from typing import Dict, List
-
 import requests
 
 from flask import current_app
@@ -31,22 +29,3 @@ def parse_vacancies(vacancies_raw):
     log(f'total: {vacancies_raw.json()["total"]}')
     log(f'more: {vacancies_raw.json()["more"]}')
     return vacancies_on_page
-
-
-def define_oldest_vacancy_timestamp(vacancies_all: List[Dict]) -> int:
-    return min([vacancy['date_published'] for vacancy in vacancies_all])
-
-
-def get_job_description(vacancy):
-    vacancy_description = []
-    for el in ('work', 'candidat', 'compensation'):
-        if vacancy[el]:
-            vacancy_description.append(str(vacancy[el]))
-    return ' '.join(vacancy_description)
-
-
-def get_first_metro_station(vacancy):
-    if vacancy['metro']:
-        return vacancy['metro'][0]['title']
-    else:
-        return None
