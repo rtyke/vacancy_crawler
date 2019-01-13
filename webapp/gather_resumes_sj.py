@@ -2,22 +2,21 @@ import sys
 from typing import Dict, List
 
 from flask import current_app
-from webapp.models import db_session
-from webapp.data_handling_orm import get_newest_timestamp, put_vacancy_to_db
+from webapp.models import get_newest_timestamp
+from webapp.data_handling_orm import put_vacancy_to_db
 from webapp.scrape_superjob import request_vacancies_page, parse_vacancies
 from webapp.scriber import log
 from webapp.utils import get_unixtime_several_days_back, get_unixtime_several_mins_back, strtime_from_unixtime
 
 
-def define_init_period(session, run='new'):
+def define_init_period(run='new'):
     # run = os.environ['RUN']
     if run == 'new':
         update_for_x_days = current_app.config['INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS']
         period_start = get_unixtime_several_days_back(days=update_for_x_days)
-        # period_start = get_unixtime_several_days_back(days=20)
         period_end = get_unixtime_several_mins_back(minutes=10)
     elif run == 'update':
-        period_start = get_newest_timestamp(session)
+        period_start = get_newest_timestamp()
         period_end = get_unixtime_several_mins_back(minutes=10)
     else:
         return None
@@ -47,7 +46,7 @@ def is_more_vacancies_to_scrape(vacancies_raw):
 
 
 def gather_resumes(run):
-    scraping_period = define_init_period(db_session, run)
+    scraping_period = define_init_period(run)
     if not scraping_period:
         sys.exit('Please specify type of scrapping in RUN key: "new" or "update"')
     vacancies_more = True
@@ -59,5 +58,4 @@ def gather_resumes(run):
         vacancies_parsed = parse_vacancies(vacancies_raw)
         scraping_period = slide_period(scraping_period, vacancies_parsed)
         for vacancy in vacancies_parsed:
-            put_vacancy_to_db(db_session, vacancy)
-    db_session.close()
+            put_vacancy_to_db(vacancy)

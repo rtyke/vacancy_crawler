@@ -1,12 +1,7 @@
 import json
 import time
 
-from webapp.models import Vacancy, Salary
-
-
-def get_newest_timestamp(session):
-    timestamps = session.query(Vacancy.published_date).all()
-    return str(max(timestamps)[0])
+from webapp.models import Vacancy, Salary, db_session
 
 
 def get_job_description(vacancy):
@@ -24,8 +19,8 @@ def get_first_metro_station(vacancy):
         return None
 
 
-def put_vacancy_to_db(session, vacancy):
-    vacancy_not_in_db = session.query(Vacancy).filter(Vacancy.id_on_site == vacancy['id']).count() < 1
+def put_vacancy_to_db(vacancy):
+    vacancy_not_in_db = Vacancy.query.filter(Vacancy.id_on_site == vacancy['id']).count() < 1
     if vacancy_not_in_db:
         vacancy_orm = Vacancy(
             id_on_site=vacancy['id'],
@@ -51,12 +46,6 @@ def put_vacancy_to_db(session, vacancy):
             vacancy=vacancy_orm
 
         )
-        session.add(vacancy_orm)
-        session.add(salary_orm)
-        session.commit()
-
-
-
-
-
-
+        db_session.add(vacancy_orm)
+        db_session.add(salary_orm)
+        db_session.commit()

@@ -1,14 +1,15 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, func
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine('sqlite:///vacancies_sj.db', echo=False)
+engine = create_engine('sqlite:///vacancies_sj1301.db', echo=False)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
+
 
 
 class Vacancy(Base):
@@ -49,6 +50,9 @@ class Vacancy(Base):
         self.added_to_db_at = added_to_db_at
         self.url = url
 
+    def __repr__(self):
+        return f'<Vacancy {self.url}>'
+
 
 class Salary(Base):
     __tablename__ = 'salary'
@@ -70,3 +74,8 @@ class Salary(Base):
 
 def init_db():
     Base.metadata.create_all(bind=engine)
+
+
+def get_newest_timestamp():
+    published_dates = Vacancy.query.values(Vacancy.published_date)
+    return max([x[0] for x in published_dates])
