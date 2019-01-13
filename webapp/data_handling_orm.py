@@ -20,6 +20,8 @@ def get_first_metro_station(vacancy):
 
 
 def put_vacancy_to_db(vacancy):
+    if 'id' not in vacancy:
+        return
     vacancy_not_in_db = Vacancy.query.filter(Vacancy.id_on_site == vacancy['id']).count() < 1
     if vacancy_not_in_db:
         vacancy_orm = Vacancy(
