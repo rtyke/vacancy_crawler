@@ -1,7 +1,7 @@
 import json
 import time
 
-from webapp.models import Vacancy, Salary, db_session
+from webapp.models import Vacancy, Salary, db_session, Specialization
 
 
 def get_job_description(vacancy):
@@ -17,6 +17,10 @@ def get_first_metro_station(vacancy):
         return vacancy['metro'][0]['title']
     else:
         return None
+
+
+def get_specializations(specializations_all):
+    return [x['id'] for x in specializations_all if x['id']]
 
 
 def put_vacancy_to_db(vacancy):
@@ -35,7 +39,6 @@ def put_vacancy_to_db(vacancy):
             metro=get_first_metro_station(vacancy),
             type_of_work=vacancy['type_of_work']['title'],
             experience=vacancy['experience']['title'],
-            specializations=json.dumps(vacancy['catalogues'], ensure_ascii=False),  # TODO discuss this
             is_archive=vacancy['is_archive'],
             added_to_db_at=int(time.time()),
             url=vacancy['link']
@@ -48,6 +51,10 @@ def put_vacancy_to_db(vacancy):
             vacancy=vacancy_orm
 
         )
+
         db_session.add(vacancy_orm)
         db_session.add(salary_orm)
+        print(type(db_session))
         db_session.commit()
+
+

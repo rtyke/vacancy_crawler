@@ -14,10 +14,11 @@ def request_vacancies_page(scraping_period):
         'page': 0,
         'date_published_from': from_date,
         'date_published_to': until_date,
+        'catalogues': current_app.config['JOB_CATEGORIES_SJ']
     }
     try:
-        HEADERS = {'X-Api-App-Id': current_app.config['SJ_API_KEY']}
-        response = requests.get(vacancies_url, headers=HEADERS, params=params)
+        headers = {'X-Api-App-Id': current_app.config['API_KEY_SJ']}
+        response = requests.get(vacancies_url, headers=headers, params=params)
         response.raise_for_status()
         return response
     except requests.RequestException:
