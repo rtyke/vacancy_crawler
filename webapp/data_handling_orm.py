@@ -1,7 +1,7 @@
-import json
 import time
 
-from webapp.models import Vacancy, Salary, db_session, Specialization
+from flask import current_app
+from webapp.models import Vacancy, Salary, db_session, Field
 
 
 def get_job_description(vacancy):
@@ -17,10 +17,6 @@ def get_first_metro_station(vacancy):
         return vacancy['metro'][0]['title']
     else:
         return None
-
-
-def get_specializations(specializations_all):
-    return [x['id'] for x in specializations_all if x['id']]
 
 
 def put_vacancy_to_db(vacancy):
@@ -51,10 +47,17 @@ def put_vacancy_to_db(vacancy):
             vacancy=vacancy_orm
 
         )
+        vacancy_fields_objects = []
+        for vacancy_field in vacancy['catalogues']:
+            if vacancy_field['id'] in current_app.config['JOB_CATEGORIES_SJ']:
+                field_obj = Field.query.filter(Field.id_sj == vacancy_field['id']).all()[0]
+                vacancy_fields_objects.append(field_obj)
+        vacancy_fields_objects = list(set(vacancy_fields_objects))
+
+        vacancy_orm.field = vacancy_fields_objects
 
         db_session.add(vacancy_orm)
         db_session.add(salary_orm)
-        print(type(db_session))
         db_session.commit()
 
 
