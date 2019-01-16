@@ -38,6 +38,12 @@ def generator_hh_vacancies_last_month(specialization_id, size_window={'hours': 6
         start_time = interval_end + timedelta(**between_windows)
 
 
+def generator_vacancy_from_specializations(specialization_data):
+    for spec in get_hh_specialization_dict():
+        if spec['name'] in specialization_data:
+            yield from generator_hh_vacancies_last_month(specialization_id=spec['id'])
+
+
 def pretty_print_json(data):
     print(json.dumps(data, indent=4, sort_keys=False, ensure_ascii=False))
 
@@ -52,10 +58,7 @@ def main():
                            'Информационные технологии, интернет, телеком',
                            'Медицина, фармацевтика']
 
-    for spec in get_hh_specialization_dict():
-        if spec['name'] in specialization_data:
-            for vacancy in generator_hh_vacancies_last_month(specialization_id=spec['id']):
-                pretty_print_json(vacancy)
+    pretty_print_json(generator_vacancy_from_specializations(specialization_data))
 
 
 if __name__ == '__main__':
