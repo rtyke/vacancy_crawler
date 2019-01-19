@@ -1,7 +1,7 @@
 import time
 
 from flask import current_app
-from webapp.models import Vacancy, Salary, db_session, Field
+from webapp.models import Vacancy, db_session, Field
 
 
 def get_job_description(vacancy):
@@ -29,6 +29,9 @@ def put_vacancy_to_db(vacancy):
             title=vacancy['profession'],
             published_date=vacancy['date_published'],
             description=get_job_description(vacancy),
+            salary_from=vacancy['payment_from'],
+            salary_to=vacancy['payment_to'],
+            currency=vacancy['currency'],
             firm=vacancy['firm_name'],
             address=vacancy['address'],
             town=vacancy['town']['title'],
@@ -38,14 +41,6 @@ def put_vacancy_to_db(vacancy):
             is_archive=vacancy['is_archive'],
             added_to_db_at=int(time.time()),
             url=vacancy['link']
-        )
-        salary_orm = Salary(
-            agreement=vacancy['agreement'],
-            payment_from=vacancy['payment_from'],
-            payment_to=vacancy['payment_to'],
-            currency=vacancy['currency'],
-            vacancy=vacancy_orm
-
         )
         vacancy_fields_objects = []
         for vacancy_field in vacancy['catalogues']:
@@ -57,7 +52,4 @@ def put_vacancy_to_db(vacancy):
         vacancy_orm.field = vacancy_fields_objects
 
         db_session.add(vacancy_orm)
-        db_session.add(salary_orm)
         db_session.commit()
-
-

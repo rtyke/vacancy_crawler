@@ -3,7 +3,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine('sqlite:///vacancies_with_fields.db', echo=False)
+engine = create_engine('sqlite:///vacancies_categories.db', echo=False)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -26,6 +26,9 @@ class Vacancy(Base):
     title = Column(String, nullable=False)
     published_date = Column(Integer)
     description = Column(String)
+    salary_from = Column(Integer)
+    salary_to = Column(Integer)
+    currency = Column(String)
     firm = Column(String)
     address = Column(String)
     town = Column(String, nullable=False)
@@ -39,13 +42,16 @@ class Vacancy(Base):
     source = Column(String, default='SuperJob')
 
 
-    def __init__(self, id_on_site, title, published_date, description, firm,
-                 address, town, metro, type_of_work, experience, is_archive,
-                 added_to_db_at, url):
+    def __init__(self, id_on_site, title, published_date, description,
+                 salary_from, salary_to, currency, firm, address, town, metro,
+                 type_of_work, experience, is_archive, added_to_db_at, url):
         self.id_on_site = id_on_site
         self.title = title
         self.published_date = published_date
         self.description = description
+        self.salary_from = salary_from
+        self.salary_to = salary_to
+        self.currency = currency
         self.firm = firm
         self.address = address
         self.town = town
@@ -58,27 +64,6 @@ class Vacancy(Base):
 
     def __repr__(self):
         return f'<Vacancy {self.url}>'
-
-
-class Salary(Base):
-    __tablename__ = 'salaries'
-    id = Column(Integer, primary_key=True)
-    agreement = Column(Boolean)
-    payment_from = Column(Integer)
-    payment_to = Column(Integer)
-    currency = Column(String)
-    vacancy_id = Column(Integer, ForeignKey('vacancies.id'))
-    vacancy = relationship(Vacancy, backref=backref('salary', uselist=False))
-
-    def __init__(self, agreement, payment_from, payment_to, currency, vacancy):
-        self.agreement = agreement
-        self.payment_from = payment_from
-        self.payment_to = payment_to
-        self.currency = currency
-        self.vacancy = vacancy
-
-    def __repr__(self):
-        return f'<Salary {self.payment_from}>'
 
 
 class Field(Base):
