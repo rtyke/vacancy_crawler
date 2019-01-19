@@ -13,6 +13,7 @@ Base.query = db_session.query_property()
 
 vac_spec = Table(
     'vacancy_fields', Base.metadata,
+    Column('vacancy_filed_id', Integer,primary_key=True),
     Column('vacancy_id', Integer, ForeignKey('vacancies.id')),
     Column('specialization_id', Integer, ForeignKey('fields.id'))
 )
