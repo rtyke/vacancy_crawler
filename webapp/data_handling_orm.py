@@ -19,6 +19,17 @@ def get_first_metro_station(vacancy):
         return None
 
 
+def search_vacancies_by_word(word):
+    pattern = f'%{word}%'
+    # print(Vacancy.query.filter(Vacancy.title.like(pattern)).first().title)
+    # TODO add exceptions
+    vacancies_matched = Vacancy.query.filter(
+        Vacancy.title.like(pattern),
+        Vacancy.description.like(pattern),
+    )
+    return vacancies_matched
+
+
 def put_vacancy_to_db(vacancy):
     if 'id' not in vacancy:
         return

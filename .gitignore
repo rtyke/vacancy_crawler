@@ -7,3 +7,4 @@ try.py
 *.log
 api_key.py
 *.db
+__pycache__

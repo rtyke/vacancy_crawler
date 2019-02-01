@@ -3,7 +3,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 
-engine = create_engine('sqlite:///vacancies_categories.db', echo=False)
+# engine = create_engine('sqlite:///vacancies_categories.db', echo=False)
+engine = create_engine('sqlite:///9999.db', echo=False)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
