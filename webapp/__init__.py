@@ -18,7 +18,7 @@ def create_app():
     def index():
         search_form = SearchForm()
         page_title = 'Scraped Vacancies'
-        vacancies_last = db_session.query(Vacancy).order_by(Vacancy.published_date.desc()).limit(10)
+        vacancies_last = Vacancy.query.order_by(Vacancy.published_date.desc()).limit(10)
         return render_template(
             'index.html',
             title=page_title,
