@@ -1,5 +1,7 @@
 import time
 
+from sqlalchemy import or_, func
+
 from flask import current_app
 from webapp.models import Vacancy, db_session, Field
 
@@ -17,6 +19,17 @@ def get_first_metro_station(vacancy):
         return vacancy['metro'][0]['title']
     else:
         return None
+
+
+def search_vacancies_by_word(word):
+    pattern = f'%{str.lower(word)}%'
+    # TODO add exceptions
+    vacancies_matched = Vacancy.query.filter(or_(
+        func.lower(Vacancy.title).like(pattern),
+        func.lower(Vacancy.description).like(pattern),
+    ))
+    print(vacancies_matched)
+    return vacancies_matched
 
 
 def put_vacancy_to_db(vacancy):
@@ -45,7 +58,7 @@ def put_vacancy_to_db(vacancy):
         vacancy_fields_objects = []
         for vacancy_field in vacancy['catalogues']:
             if vacancy_field['id'] in current_app.config['JOB_CATEGORIES_SJ']:
-                field_obj = Field.query.filter(Field.id_sj == vacancy_field['id']).all()[0]
+                field_obj = Field.query.filter(Field.id_sj == vacancy_field['id']).first()
                 vacancy_fields_objects.append(field_obj)
         vacancy_fields_objects = list(set(vacancy_fields_objects))
 
