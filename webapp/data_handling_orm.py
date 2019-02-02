@@ -1,6 +1,6 @@
 import time
 
-from sqlalchemy import or_, func
+from sqlalchemy import or_
 
 from flask import current_app
 from webapp.models import Vacancy, db_session, Field
@@ -25,8 +25,9 @@ def search_vacancies_by_word(word):
     pattern = f'%{str.lower(word)}%'
     # TODO add exceptions
     vacancies_matched = Vacancy.query.filter(or_(
-        func.lower(Vacancy.title).like(pattern),
-        func.lower(Vacancy.description).like(pattern),
+        Vacancy.title.ilike(pattern),
+        Vacancy.description.ilike(pattern),
+
     ))
     print(vacancies_matched)
     return vacancies_matched
