@@ -9,19 +9,21 @@ SJ_KEY заменить Secret key полученным в предыдущем 
 
 4. Установить зависимости из requiremtns.txt
 
-5. Создать базу данных
+5. Установить и запустить postgressl
+
+6. Создать базу данных
 python create_db.py
 
-6. Получить обновления за послдение 20 дней
+7. Получить обновления за послдение 20 дней
 python get_vacancies_all.py
 Это займет около 30 минут! Можно сократить срок, за который получашеь обновления изменив срок обновления в файле webapp/config.py:
 INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS
 
-7. Получать обновления:
+8. Получать обновления:
 python get_vacancies_updates.py
 
-8. Запуск сервера
-export FLASK_APP=webapp && export FLASK_ENV=development && flask run
+9. Запуск сервера
+export FLASK_APP=webapp && export FLASK_ENV=development && export RDS_PORT=5432 && flask run
 
-9. Посмотреть результат работы
+10. Посмотреть результат работы
 http://127.0.0.1:5000/
