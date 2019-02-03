@@ -27,3 +27,9 @@ export FLASK_APP=webapp && export FLASK_ENV=development && export RDS_PORT=5432 
 
 10. Посмотреть результат работы
 http://127.0.0.1:5000/
+
+====
+celery -A get_vacancies_all worker --loglevel=info
+
+celery -A get_vacancies_updates worker --loglevel=info
+celery -A get_vacancies_updates beat

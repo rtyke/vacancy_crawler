@@ -45,13 +45,13 @@ def is_more_vacancies_to_scrape(vacancies_raw):
     return vacancies_raw.json()['more']
 
 
-def gather_resumes(run):
+def gather_resumes(run, job_field):
     scraping_period = define_init_period(run)
     if not scraping_period:
         sys.exit('Please specify type of scrapping in RUN key: "new" or "update"')
     vacancies_more = True
     while vacancies_more:
-        vacancies_raw = request_vacancies_page(scraping_period)
+        vacancies_raw = request_vacancies_page(scraping_period, job_field)
         if not vacancies_raw:
             sys.exit('Connection error')
         vacancies_more = is_more_vacancies_to_scrape(vacancies_raw)

@@ -5,7 +5,7 @@ from webapp.scriber import log
 from webapp.utils import strtime_from_unixtime
 
 
-def request_vacancies_page(scraping_period):
+def request_vacancies_page(scraping_period, job_field):
     from_date, until_date = scraping_period
     log(f'Get vacancies till {strtime_from_unixtime(until_date)} since {strtime_from_unixtime(from_date)}')
     vacancies_url = 'https://api.superjob.ru/2.0/vacancies/'
@@ -14,7 +14,8 @@ def request_vacancies_page(scraping_period):
         'page': 0,
         'date_published_from': from_date,
         'date_published_to': until_date,
-        'catalogues': current_app.config['JOB_CATEGORIES_SJ']
+        # 'catalogues': current_app.config['JOB_CATEGORIES_SJ'],
+        'catalogues': job_field,
     }
     try:
         headers = {'X-Api-App-Id': current_app.config['API_KEY_SJ']}

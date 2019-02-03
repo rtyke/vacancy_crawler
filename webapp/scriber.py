@@ -13,7 +13,7 @@ import sys
 # my_logger = logging.getLogger()
 logger = logging.getLogger('scrapper_logging')
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('log.log')
+fh = logging.FileHandler('celery_log.log')
 fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)

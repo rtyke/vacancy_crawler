@@ -1,8 +1,22 @@
+from celery import Celery
+from celery.schedules import crontab
+
 from webapp import create_app
 from webapp.gather_resumes_sj import gather_resumes
 
 
-app = create_app()
+flask_app = create_app()
+celery_app = Celery('get_vacancies_updates', broker='pyamqp://guest@localhost//')
 
-with app.app_context():
-    gather_resumes(run='update')
+
+@celery_app.task
+def update_resumes_sj(job_field):
+    with flask_app.app_context():
+        gather_resumes(run='update', job_field=job_field)
+
+
+@celery_app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(crontab(minute='*/1'), update_resumes_sj.s(33))
+
+

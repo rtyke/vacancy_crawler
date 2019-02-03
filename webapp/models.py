@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
 
-engine = create_engine('postgres://localhost/vac_cat', echo=True)
+engine = create_engine('postgres://localhost/celery_vac_cat', echo=False)
 if not database_exists(engine.url):
     create_database(engine.url)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -16,7 +16,7 @@ Base.query = db_session.query_property()
 
 vac_spec = Table(
     'vacancy_fields', Base.metadata,
-    Column('vacancy_filed_id', Integer,primary_key=True),
+    Column('vacancy_filed_id', Integer, primary_key=True),
     Column('vacancy_id', Integer, ForeignKey('vacancies.id')),
     Column('specialization_id', Integer, ForeignKey('fields.id'))
 )
