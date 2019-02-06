@@ -1,48 +1,86 @@
+
 vacancy = \
 {
-    "id": "29509170",
+    "id": "28981537",
     "premium": False,
-    "name": "Инженер разработчик РЭА",
+    "name": "Руководитель отдела IT",
     "department": None,
     "has_test": False,
-    "response_letter_required": True,
+    "response_letter_required": False,
     "area": {
-        "id": "1",
-        "name": "Москва",
-        "url": "https://api.hh.ru/areas/1"
+        "id": "4",
+        "name": "Новосибирск",
+        "url": "https://api.hh.ru/areas/4"
     },
     "salary": None,
     "type": {
         "id": "open",
         "name": "Открытая"
     },
-    "address": {'metro': {'station_name': None}},
+    "address": {
+        "city": "Moscow",
+        "street": "Beskudnokovskii b-r",
+        "description": None,
+        "lat": 55.06487,
+        "lng": 82.991397,
+        "raw": None,
+        "metro": {
+            "station_name": "Березовая роща",
+            "line_name": "Дзержинская",
+            "station_id": "53.305",
+            "line_id": "53",
+            "lat": 55.043242,
+            "lng": 82.952913
+        },
+        "metro_stations": [
+            {
+                "station_name": "Березовая роща",
+                "line_name": "Дзержинская",
+                "station_id": "53.305",
+                "line_id": "53",
+                "lat": 55.043242,
+                "lng": 82.952913
+            }
+        ],
+        "id": "971737"
+    },
     "response_url": None,
     "sort_point_distance": None,
     "employer": {
-        "id": "3469977",
-        "name": "Тоталзед",
-        "url": "https://api.hh.ru/employers/3469977",
-        "alternate_url": "https://hh.ru/employer/3469977",
+        "id": "1713421",
+        "name": "Национальная Почтовая Служба-Байкал",
+        "url": "https://api.hh.ru/employers/1713421",
+        "alternate_url": "https://hh.ru/employer/1713421",
         "logo_urls": {
-            "90": "https://hhcdn.ru/employer-logo/2600713.jpeg",
-            "240": "https://hhcdn.ru/employer-logo/2600714.jpeg",
-            "original": "https://hhcdn.ru/employer-logo-original/539810.jpg"
+            "240": "https://hhcdn.ru/employer-logo/2869773.jpeg",
+            "90": "https://hhcdn.ru/employer-logo/2869772.jpeg",
+            "original": "https://hhcdn.ru/employer-logo-original/607155.jpg"
         },
-        "vacancies_url": "https://api.hh.ru/vacancies?employer_id=3469977",
+        "vacancies_url": "https://api.hh.ru/vacancies?employer_id=1713421",
         "trusted": True
     },
-    "published_at": "2019-01-06T03:32:44+0300",
-    "created_at": "2019-01-06T03:32:44+0300",
+    "published_at": "2019-01-07T04:12:08+0300",
+    "created_at": "2019-01-07T04:12:08+0300",
     "archived": False,
-    "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=29509170",
+    "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=28981537",
     "insider_interview": None,
-    "url": "https://api.hh.ru/vacancies/29509170?host=hh.ru",
-    "alternate_url": "https://hh.ru/vacancy/29509170",
+    "url": "https://api.hh.ru/vacancies/28981537?host=hh.ru",
+    "alternate_url": "https://hh.ru/vacancy/28981537",
     "relations": [],
     "snippet": {
-        "requirement": "Опыт проектирования плат. Наличие портфолио. Опыт программирования.",
-        "responsibility": "Разработка электронных плат и устройств. Составление схем и трассировок. Написание ПО. Монтаж, настройка и отладка опытных образцов. Самостоятельное генерирование рац. "
+        "requirement": "Опыт работы в 1С 7 ,8. Умение работать в многозадачном режиме. Умение определять сроки решения задач, распределять их среди...",
+        "responsibility": "Разработка нового функционала решения на базе 1С в соответствии с ТЗ и требованиями заказчика. Проектирование и совершенствование дальнейшего развития..."
     },
-    "contacts": None
+    "contacts": {
+        "name": "Антонова Екатерина",
+        "email": "aes-9399@mail.ru",
+        "phones": [
+            {
+                "comment": None,
+                "city": "913",
+                "number": "9409399",
+                "country": "7"
+            }
+        ]
+    }
 }

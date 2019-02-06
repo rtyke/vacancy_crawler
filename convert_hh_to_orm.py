@@ -4,8 +4,15 @@ from orm import session, Vacancy, Field
 
 def get_vacancy_address(vacancy):
     try:
-        return ', '.join([vacancy[key] for key in ['city', 'street', 'building']])
-    except KeyError:
+        # city = vacancy['address'].get('city')
+        # street = vacancy['address'].get('street')
+        # building = vacancy['address'].get('building')
+        # if city or street or building:
+        #     return ', '.join(filter(None, [city, street, building]))
+        # else:
+        #     return
+        return ', '.join(filter(None, [vacancy['address'].get(key) for key in ['city', 'street', 'building']]))
+    except (KeyError, AttributeError):
         return
 
 
@@ -27,10 +34,10 @@ def convert_vacancy_to_orm(vacancy, spec_id):
            currency=vacancy['salary']['currency'] if vacancy['salary'] is not None else None,
            firm=vacancy['employer']['name'],
            address=get_vacancy_address(vacancy),
-           town=vacancy['address']['city'] if vacancy['address'] is not None else None,
+           town=vacancy['area']['name'],
            metro=get_metro_station_from_address(vacancy['address']),
            type_of_work=None,
-           experience=None,
+           experience=vacancy['snippet']['requirement'],
            is_archive=vacancy['archived'],
            added_to_db_at=datetime.now().isoformat(),
            url=vacancy['alternate_url']

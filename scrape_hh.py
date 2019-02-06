@@ -63,7 +63,7 @@ def pretty_print_json(data):
 #                        'Информационные технологии, интернет, телеком',
 #                        'Медицина, фармацевтика']
 #
-# for vacancy, spec in generator_vacancy_from_specializations(specialization_data):
+# for vacancy, spec in generator_vacancy_from_specializations(get_datetime_month_ago(), datetime.now(), specialization_data):
 #     pretty_print_json(vacancy)
 #     break
 
