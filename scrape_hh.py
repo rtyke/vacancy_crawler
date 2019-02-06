@@ -20,10 +20,8 @@ def get_datetime_month_ago():
     return last_month
 
 
-def generator_hh_vacancies_last_month(specialization_id, size_window={'hours': 6}, between_windows={'minutes': 5}):
+def generator_hh_vacancies(start_time, end_time, specialization_id, size_window={'hours': 6}, between_windows={'minutes': 5}):
     global HEADERS
-    start_time = get_datetime_month_ago()
-    end_time = datetime.now()
     while start_time < end_time:
         interval_end = start_time + timedelta(**size_window)
         params = {'page': 0,
@@ -32,34 +30,40 @@ def generator_hh_vacancies_last_month(specialization_id, size_window={'hours': 6
                   'date_to': datetime.strftime(interval_end, "%Y-%m-%dT%H:%M:%S"),
                   'specialization': specialization_id}
         while params['page'] < 20:
-            response = requests.get(url='https://api.hh.ru/vacancies/', params=params, headers=HEADERS)
-            params['page'] += 1
-            yield from response.json()['items']
+            try:
+                response = requests.get(url='https://api.hh.ru/vacancies/', params=params, headers=HEADERS)
+                params['page'] += 1
+                yield from response.json()['items']
+            except requests.exceptions.Timeout:
+                continue
         start_time = interval_end + timedelta(**between_windows)
 
 
-def generator_vacancy_from_specializations(specialization_data):
+def generator_vacancy_from_specializations(start_time, end_time, specialization_data):
+    """
+    :param specialization_data: list
+    :return: vacancy - dict(), spec - dict()
+    """
     for spec in get_hh_specialization_dict():
         if spec['name'] in specialization_data:
-            yield from generator_hh_vacancies_last_month(specialization_id=spec['id'])
+            for vacancy in generator_hh_vacancies(start_time, end_time, spec['id']):
+                yield vacancy, spec
 
 
 def pretty_print_json(data):
     print(json.dumps(data, indent=4, sort_keys=False, ensure_ascii=False))
 
 
-def main():
-    specialization_data = ['Банки, инвестиции, лизинг',
-                           'Маркетинг, реклама, PR',
-                           'Управление персоналом, тренинги',
-                           'Бухгалтерия, управленческий учет, финансы предприятия',
-                           'Страхование',
-                           'Юристы',
-                           'Информационные технологии, интернет, телеком',
-                           'Медицина, фармацевтика']
+# specialization_data = ['Банки, инвестиции, лизинг',
+#                        'Маркетинг, реклама, PR',
+#                        'Управление персоналом, тренинги',
+#                        'Бухгалтерия, управленческий учет, финансы предприятия',
+#                        'Страхование',
+#                        'Юристы',
+#                        'Информационные технологии, интернет, телеком',
+#                        'Медицина, фармацевтика']
+#
+# for vacancy, spec in generator_vacancy_from_specializations(specialization_data):
+#     pretty_print_json(vacancy)
+#     break
 
-    pretty_print_json(generator_vacancy_from_specializations(specialization_data))
-
-
-if __name__ == '__main__':
-    main()
