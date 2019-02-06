@@ -33,3 +33,6 @@ celery -A get_vacancies_all worker --loglevel=info
 
 celery -A get_vacancies_updates worker --loglevel=info
 celery -A get_vacancies_updates beat
+
+celery -A temp worker --loglevel=info
+celery -A temp beat
