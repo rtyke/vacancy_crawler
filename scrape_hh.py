@@ -1,6 +1,9 @@
-import requests
 import json
 from datetime import datetime, timedelta
+
+from webapp.scriber import log
+
+import requests
 
 
 HEADERS = {'User-Agent': 'api-test-agent'}
@@ -20,10 +23,17 @@ def get_datetime_month_ago():
     return last_month
 
 
-def generator_hh_vacancies(start_time, end_time, specialization_id, size_window={'hours': 6}, between_windows={'minutes': 5}):
+def generator_hh_vacancies(
+        start_time,
+        end_time,
+        specialization_id,
+        size_window={'hours': 6},
+        between_windows={'minutes': 5}
+):
     global HEADERS
     while start_time < end_time:
         interval_end = start_time + timedelta(**size_window)
+        log(f'HH Get vacancies till {datetime.strftime(interval_end, "%Y-%m-%dT%H:%M:%S")} since {datetime.strftime(start_time, "%Y-%m-%dT%H:%M:%S")}')
         params = {'page': 0,
                   'per_page': 100,
                   'date_from': datetime.strftime(start_time, "%Y-%m-%dT%H:%M:%S"),
@@ -39,7 +49,11 @@ def generator_hh_vacancies(start_time, end_time, specialization_id, size_window=
         start_time = interval_end + timedelta(**between_windows)
 
 
-def generator_vacancy_from_specializations(start_time, end_time, specialization_data):
+def generator_vacancy_from_specializations(
+        start_time,
+        end_time,
+        specialization_data
+):
     """
     :param specialization_data: list
     :return: vacancy - dict(), spec - dict()
@@ -52,18 +66,3 @@ def generator_vacancy_from_specializations(start_time, end_time, specialization_
 
 def pretty_print_json(data):
     print(json.dumps(data, indent=4, sort_keys=False, ensure_ascii=False))
-
-
-# specialization_data = ['Банки, инвестиции, лизинг',
-#                        'Маркетинг, реклама, PR',
-#                        'Управление персоналом, тренинги',
-#                        'Бухгалтерия, управленческий учет, финансы предприятия',
-#                        'Страхование',
-#                        'Юристы',
-#                        'Информационные технологии, интернет, телеком',
-#                        'Медицина, фармацевтика']
-#
-# for vacancy, spec in generator_vacancy_from_specializations(get_datetime_month_ago(), datetime.now(), specialization_data):
-#     pretty_print_json(vacancy)
-#     break
-

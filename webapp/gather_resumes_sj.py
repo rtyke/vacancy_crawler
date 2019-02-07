@@ -1,5 +1,4 @@
 import sys
-from typing import Dict, List
 
 from flask import current_app
 from webapp.models import get_newest_timestamp
@@ -47,7 +46,7 @@ def is_more_vacancies_to_scrape(vacancies_raw):
     return vacancies_raw.json()['more']
 
 
-def gather_resumes(run, job_field):
+def gather_vacancies_sj(run, job_field):
     scraping_period = define_init_period(run)
     if not scraping_period:
         sys.exit('Please specify type of scrapping in RUN key: "new" or "update"')

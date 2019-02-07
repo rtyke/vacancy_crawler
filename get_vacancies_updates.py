@@ -2,7 +2,7 @@ from celery import Celery
 from celery.schedules import crontab
 
 from webapp import create_app
-from webapp.gather_resumes_sj import gather_resumes
+from webapp.gather_resumes_sj import gather_vacancies_sj
 
 
 flask_app = create_app()
@@ -12,7 +12,7 @@ celery_app = Celery('get_vacancies_updates', broker='pyamqp://guest@localhost//'
 @celery_app.task
 def update_resumes_one_field_sj(job_field):
     with flask_app.app_context():
-        gather_resumes(run='update', job_field=job_field)
+        gather_vacancies_sj(run='update', job_field=job_field)
 
 
 @celery_app.task

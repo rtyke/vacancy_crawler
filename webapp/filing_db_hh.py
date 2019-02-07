@@ -1,8 +1,12 @@
+from datetime import datetime
+
+from sqlalchemy import exists
+
 from webapp.models import db_session, Field, Vacancy
 from scrape_hh import generator_hh_vacancies, get_datetime_month_ago
 from convert_hh_to_orm import convert_vacancy_to_orm
-from sqlalchemy import exists
-from datetime import datetime
+
+
 
 specialization_data = [[5, 381, 'Банки, инвестиции, лизинг'],
                        [3, 234, 'Маркетинг, реклама, PR'],
@@ -28,6 +32,13 @@ def filling_vacancy(specialization_id_hh):
             if not db_session.query(exists().where(Vacancy.id_on_site == vacancy['id'])).scalar():
                 db_session.add(convert_vacancy_to_orm(vacancy, spec_id))
                 db_session.commit()
+
+
+def gather_vacancies_hh(spec_id):
+    for vacancy in generator_hh_vacancies(get_datetime_month_ago(), datetime.now(), spec_id):
+        if not db_session.query(exists().where(Vacancy.id_on_site == vacancy['id'])).scalar():
+            db_session.add(convert_vacancy_to_orm(vacancy, spec_id))
+            db_session.commit()
 
 
 if __name__ == '__main__':
