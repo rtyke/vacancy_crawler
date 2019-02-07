@@ -110,9 +110,3 @@ def fill_in_fields_handbook():
     db_session.add(accoutant)
     db_session.add(hr)
     db_session.commit()
-
-
-def get_newest_timestamp():
-    # TODO rename to SJ method. Rewrite to get only SJ vacacncies. Move to another place
-    published_dates = Vacancy.query.values(Vacancy.published_date)
-    return max([x[0] for x in published_dates])

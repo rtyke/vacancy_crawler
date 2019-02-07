@@ -1,7 +1,7 @@
 import sys
 
 from flask import current_app
-from webapp.models import get_newest_timestamp
+from webapp.models import Vacancy
 from webapp.data_handling_orm_sj import put_vacancy_to_db
 from webapp.scrape_sj import request_vacancies_page, parse_vacancies
 from webapp.scriber import log
@@ -14,7 +14,8 @@ def define_init_period(run='new'):
         update_for_x_days = current_app.config['INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS']
         period_start = get_unixtime_several_days_back(days=update_for_x_days)
     elif run == 'update':
-        period_start = unixtime_from_datetime(get_newest_timestamp())
+        latest_time = Vacancy.query.order_by(Vacancy.added_to_db_at.desc()).filter(Vacancy.source == 'SuperJob').first().added_to_db_at
+        period_start = unixtime_from_datetime(latest_time)
     else:
         return None
     return period_start, period_end

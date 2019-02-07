@@ -16,7 +16,8 @@ def define_scrapping_period(run):
         period_start = get_datetime_several_days_back(days=update_for_x_days)
     elif run == 'update':
         # TODO rewrite to get only HH vacancies
-        latest_time = Vacancy.query.order_by(Vacancy.added_to_db_at.desc()).first().added_to_db_at
+        # latest_time = Vacancy.query.order_by(Vacancy.added_to_db_at.desc()).first().added_to_db_at
+        latest_time = Vacancy.query.order_by(Vacancy.added_to_db_at.desc()).filter(Vacancy.source == 'HeadHunter').first().added_to_db_at
         period_start = latest_time
     else:
         return None
