@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
 
-engine = create_engine('postgres://localhost/hh_sj', echo=False)
+engine = create_engine('postgres://localhost/hh_sj_one_day', echo=False)
 if not database_exists(engine.url):
     create_database(engine.url)
 db_session = scoped_session(sessionmaker(autocommit=False,

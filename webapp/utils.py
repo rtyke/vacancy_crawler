@@ -29,6 +29,9 @@ def get_isotime_several_days_back(days=10):
     return several_days_back.isoformat()
 
 
+def get_datetime_several_days_back(days=10):
+    return datetime.datetime.today() - datetime.timedelta(days=days)
+
 def unixtime_from_datetime(date_to_convert):
     return int(time.mktime(date_to_convert.timetuple()))
 
