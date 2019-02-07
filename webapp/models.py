@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
 
-engine = create_engine('postgres://localhost/8888', echo=False)
+engine = create_engine('postgres://localhost/hh', echo=False)
 if not database_exists(engine.url):
     create_database(engine.url)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -44,12 +44,12 @@ class Vacancy(Base):
     is_archive = Column(Boolean)
     added_to_db_at = Column(DateTime)
     url = Column(Text, unique=True)
-    source = Column(Text, default='SuperJob')
+    source = Column(Text)
 
 
     def __init__(self, id_on_site, title, published_date, description,
                  salary_from, salary_to, currency, firm, address, town, metro,
-                 type_of_work, experience, is_archive, added_to_db_at, url):
+                 type_of_work, experience, is_archive, added_to_db_at, url, source):
         self.id_on_site = id_on_site
         self.title = title
         self.published_date = published_date
@@ -66,6 +66,8 @@ class Vacancy(Base):
         self.is_archive = is_archive
         self.added_to_db_at = added_to_db_at
         self.url = url
+        self.source = source
+
 
     def __repr__(self):
         return f'<Vacancy {self.url}>'

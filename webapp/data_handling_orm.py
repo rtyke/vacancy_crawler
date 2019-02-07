@@ -57,7 +57,8 @@ def put_vacancy_to_db(vacancy):
             is_archive=vacancy['is_archive'],
             # added_to_db_at=int(time.time()),
             added_to_db_at=current_isotime(),
-            url=vacancy['link']
+            url=vacancy['link'],
+            source='SuperJob'
         )
         vacancy_fields_objects = []
         for vacancy_field in vacancy['catalogues']:
