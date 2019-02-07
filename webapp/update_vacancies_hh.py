@@ -16,4 +16,5 @@ def update_vacancies_for_field_hh(field_id):
             specialization_id=field_id
     ):
         if not db_session.query(exists().where(Vacancy.id_on_site == vacancy['id'])).scalar():
-            convert_vacancy_to_orm(vacancy, field_id)
+            db_session(convert_vacancy_to_orm(vacancy, field_id))
+            db_session.commit()
