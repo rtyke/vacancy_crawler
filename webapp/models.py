@@ -1,10 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Table
+from sqlalchemy import create_engine, Column, Integer, Text, Boolean, DateTime, ForeignKey, Table
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
 
-engine = create_engine('postgres://localhost/2106', echo=False)
+engine = create_engine('postgres://localhost/8888', echo=False)
 if not database_exists(engine.url):
     create_database(engine.url)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -26,24 +26,25 @@ class Vacancy(Base):
     __tablename__ = 'vacancies'
     id = Column(Integer, primary_key=True)
     # hash = None  # how to create?
-    id_on_site = Column(Integer, unique=True)
-    title = Column(String, nullable=False)
-    published_date = Column(Integer)
-    description = Column(String)
+    id_on_site = Column(Integer, index=True, unique=True)
+    title = Column(Text, nullable=False)
+    published_date = Column(DateTime)
+    description = Column(Text)
     salary_from = Column(Integer)
     salary_to = Column(Integer)
-    currency = Column(String)
-    firm = Column(String)
-    address = Column(String)
-    town = Column(String, nullable=False)
-    metro = Column(String)
-    type_of_work = Column(String)
-    experience = Column(String)
+    currency = Column(Text)
+    firm = Column(Text)
+    address = Column(Text)
+    # town = Column(Text, nullable=False)
+    town = Column(Text)
+    metro = Column(Text)
+    type_of_work = Column(Text)
+    experience = Column(Text)
     field = relationship('Field', secondary=vac_spec)
     is_archive = Column(Boolean)
-    added_to_db_at = Column(Integer)
-    url = Column(String, unique=True)
-    source = Column(String, default='SuperJob')
+    added_to_db_at = Column(DateTime)
+    url = Column(Text, unique=True)
+    source = Column(Text, default='SuperJob')
 
 
     def __init__(self, id_on_site, title, published_date, description,
@@ -75,7 +76,7 @@ class Field(Base):
     id = Column(Integer, primary_key=True)
     id_hh = Column(Integer, unique=True)
     id_sj = Column(Integer, unique=True)
-    name = Column(String, unique=True)
+    name = Column(Text, unique=True)
 
     def __init__(self, id_hh, id_sj, name):
         self.id_hh = id_hh

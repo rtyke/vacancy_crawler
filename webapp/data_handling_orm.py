@@ -1,9 +1,11 @@
 import time
+from datetime import datetime
 
 from sqlalchemy import or_
 
 from flask import current_app
 from webapp.models import Vacancy, db_session, Field
+from webapp.utils import isotime_from_unixtime, current_isotime
 
 
 def get_job_description(vacancy):
@@ -41,7 +43,7 @@ def put_vacancy_to_db(vacancy):
         vacancy_orm = Vacancy(
             id_on_site=vacancy['id'],
             title=vacancy['profession'],
-            published_date=vacancy['date_published'],
+            published_date=isotime_from_unixtime(vacancy['date_published']),
             description=get_job_description(vacancy),
             salary_from=vacancy['payment_from'],
             salary_to=vacancy['payment_to'],
@@ -53,7 +55,8 @@ def put_vacancy_to_db(vacancy):
             type_of_work=vacancy['type_of_work']['title'],
             experience=vacancy['experience']['title'],
             is_archive=vacancy['is_archive'],
-            added_to_db_at=int(time.time()),
+            # added_to_db_at=int(time.time()),
+            added_to_db_at=current_isotime(),
             url=vacancy['link']
         )
         vacancy_fields_objects = []

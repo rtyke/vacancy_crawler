@@ -7,7 +7,8 @@
     <p class="text-left">{{vacancy.firm}}</p>
     <p class="text-left">{{vacancy.town}} {% if vacancy.metro %} {{vacancy.metro}} {% endif %} <mark>{{vacancy.source}}</mark></p>
     <p class="text-left">{{vacancy.description[:400]}}... </p>
-    <p class="text-right">{{convert_unixtime(vacancy.published_date, string_time_format='%H:%M:%S %d.%m.%Y')}}</p>
+   {# <p class="text-right">{{convert_unixtime(vacancy.published_date, string_time_format='%H:%M:%S %d.%m.%Y')}}</p> #}
+           <p class="text-right">{{vacancy.published_date}}</p>
     {% endfor %}
       </div>
  {% endblock %}

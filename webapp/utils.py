@@ -8,6 +8,27 @@ import tzlocal
 LOCAL_TZ = tzlocal.get_localzone()
 
 
+def isotime_from_unixtime(date_to_convert):
+    return datetime.datetime.fromtimestamp(date_to_convert).isoformat()
+
+
+def isotime_from_datetime(date_to_convert):
+    return date_to_convert.isoformat()
+
+def current_isotime():
+    return datetime.datetime.now().isoformat()
+
+
+def get_isotime_several_mins_back(minutes=10):
+    several_mins_back = datetime.datetime.today() - datetime.timedelta(minutes=minutes)
+    return several_mins_back.isoformat()
+
+
+def get_isotime_several_days_back(days=10):
+    several_days_back = datetime.datetime.today() - datetime.timedelta(days=days)
+    return several_days_back.isoformat()
+
+
 def unixtime_from_datetime(date_to_convert):
     return int(time.mktime(date_to_convert.timetuple()))
 
