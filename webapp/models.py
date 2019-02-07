@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, Text, Boolean, DateTime, ForeignKey, Table
-from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
+from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
@@ -68,7 +68,6 @@ class Vacancy(Base):
         self.url = url
         self.source = source
 
-
     def __repr__(self):
         return f'<Vacancy {self.url}>'
 
@@ -114,5 +113,6 @@ def fill_in_fields_handbook():
 
 
 def get_newest_timestamp():
+    # TODO rename to SJ method. Rewrite to get only SJ vacacncies. Move to another place
     published_dates = Vacancy.query.values(Vacancy.published_date)
     return max([x[0] for x in published_dates])

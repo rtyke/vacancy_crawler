@@ -2,7 +2,7 @@ from celery import Celery
 
 from webapp import create_app
 from webapp.filing_db_hh import gather_vacancies_hh
-from webapp.gather_resumes_sj import gather_vacancies_sj
+from webapp.gather_vacancies_sj import gather_vacancies_sj
 
 
 flask_app = create_app()

@@ -2,8 +2,8 @@ import sys
 
 from flask import current_app
 from webapp.models import get_newest_timestamp
-from webapp.data_handling_orm import put_vacancy_to_db
-from webapp.scrape_superjob import request_vacancies_page, parse_vacancies
+from webapp.data_handling_orm_sj import put_vacancy_to_db
+from webapp.scrape_sj import request_vacancies_page, parse_vacancies
 from webapp.scriber import log
 from webapp.utils import get_unixtime_several_days_back, get_unixtime_several_mins_back, unixtime_from_datetime, strtime_from_unixtime
 
@@ -23,9 +23,6 @@ def define_init_period(run='new'):
 
 def define_oldest_vacancy_unixtime(vacancies_all):
     return min([vacancy['date_published'] for vacancy in vacancies_all])
-# def define_oldest_vacancy_isotime(vacancies_all):
-#     oldest_vacancy_timestamp = min([vacancy['date_published'] for vacancy in vacancies_all])
-#     return isotime_from_unixtime(oldest_vacancy_timestamp)
 
 
 def slide_period(scraping_period, vacancies):

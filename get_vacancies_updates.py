@@ -2,7 +2,7 @@ from celery import Celery
 from celery.schedules import crontab
 
 from webapp import create_app
-from webapp.gather_resumes_sj import gather_vacancies_sj
+from webapp.gather_vacancies_sj import gather_vacancies_sj
 from webapp.update_vacancies_hh import update_vacancies_for_field_hh
 
 

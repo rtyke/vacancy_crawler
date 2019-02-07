@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
 
 from webapp.models import Vacancy, db_session
-from webapp.data_handling_orm import search_vacancies_by_word
+from webapp.data_handling_orm_sj import search_vacancies_by_word
 from webapp.search_forms import SearchForm
 from webapp.utils import strtime_from_unixtime
 

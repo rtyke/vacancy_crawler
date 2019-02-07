@@ -1,6 +1,3 @@
-import time
-from datetime import datetime
-
 from sqlalchemy import or_
 
 from flask import current_app
@@ -55,7 +52,6 @@ def put_vacancy_to_db(vacancy):
             type_of_work=vacancy['type_of_work']['title'],
             experience=vacancy['experience']['title'],
             is_archive=vacancy['is_archive'],
-            # added_to_db_at=int(time.time()),
             added_to_db_at=current_isotime(),
             url=vacancy['link'],
             source='SuperJob'
