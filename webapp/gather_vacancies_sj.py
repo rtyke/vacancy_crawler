@@ -9,13 +9,12 @@ from webapp.utils import get_unixtime_several_days_back, get_unixtime_several_mi
 
 
 def define_init_period(run='new'):
+    period_end = get_unixtime_several_mins_back(minutes=10)
     if run == 'new':
         update_for_x_days = current_app.config['INIT_DOWNLOAD_VACANCIES_FOR_X_DAYS']
         period_start = get_unixtime_several_days_back(days=update_for_x_days)
-        period_end = get_unixtime_several_mins_back(minutes=10)
     elif run == 'update':
         period_start = unixtime_from_datetime(get_newest_timestamp())
-        period_end = get_unixtime_several_mins_back(minutes=10)
     else:
         return None
     return period_start, period_end

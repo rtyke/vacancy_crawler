@@ -1,7 +1,7 @@
 from celery import Celery
 
 from webapp import create_app
-from webapp.filing_db_hh import gather_vacancies_hh
+from webapp.gather_vacancies_hh import gather_vacancies_hh
 from webapp.gather_vacancies_sj import gather_vacancies_sj
 
 
@@ -18,7 +18,7 @@ def gather_all_vacancies_sj(job_field):
 @celery_app.task
 def gather_all_vacancies_hh(job_field):
     with flask_app.app_context():
-        gather_vacancies_hh(job_field)
+        gather_vacancies_hh(run='new', job_field=job_field)
 
 
 if __name__ == '__main__':
