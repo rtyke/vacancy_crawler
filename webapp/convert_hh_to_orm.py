@@ -1,5 +1,5 @@
 from datetime import datetime
-from webapp.models import db_session, Vacancy, Field
+from webapp.models import session, Vacancy, Field
 
 
 def get_vacancy_address(vacancy):

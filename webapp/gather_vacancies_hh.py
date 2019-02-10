@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import exists
 
 from flask import current_app
-from webapp.models import db_session, Vacancy
+from webapp.models import session, Vacancy
 from webapp.scrape_hh import generator_hh_vacancies
 from webapp.convert_hh_to_orm import convert_vacancy_to_orm
 from webapp.utils import get_datetime_several_days_back
@@ -31,6 +31,6 @@ def gather_vacancies_hh(run, job_field):
             end_time=end_time,
             specialization_id=job_field
     ):
-        if not db_session.query(exists().where(Vacancy.id_on_site == vacancy['id'])).scalar():
-            db_session.add(convert_vacancy_to_orm(vacancy, job_field))
-            db_session.commit()
+        if not session.query(exists().where(Vacancy.id_on_site == vacancy['id'])).scalar():
+            session.add(convert_vacancy_to_orm(vacancy, job_field))
+            session.commit()

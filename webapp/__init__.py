@@ -1,8 +1,8 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template
 
-from webapp.models import Vacancy, db_session
-from webapp.data_handling_orm_sj import search_vacancies_by_word
-from webapp.search_forms import SearchForm
+from webapp.models import Vacancy, session
+from webapp.search_queries import search_vacancies
+from webapp.search_forms import SmallSearchForm, SearchForm
 from webapp.utils import strtime_from_unixtime
 
 
@@ -12,35 +12,34 @@ def create_app():
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):
-        db_session.remove()
+        session.remove()
 
     @app.route('/')
     def index():
-        search_form = SearchForm()
-        page_title = 'Scraped Vacancies'
+        search = SearchForm()
+        page_title = 'Новые вакансии'
         vacancies_last = Vacancy.query.order_by(Vacancy.published_date.desc()).limit(10)
         return render_template(
             'index.html',
             title=page_title,
             vacancies=vacancies_last,
-            convert_unixtime=strtime_from_unixtime,
-            search_form=search_form
+            search_form=search,
         )
 
     @app.route('/search', methods=['POST'])
     def search():
         title = 'Поиск вакансий'
-        search_form = SearchForm()
-        # TODO validate_on_submit() ???
-        search_word = search_form.search.data
-        vacancies_searched = search_vacancies_by_word(search_word)
+        search = SearchForm()
+        vacancies_searched = search_vacancies(
+            search.search.data,
+            search.city.data,
+            search.spec.data
+        )
         return render_template(
-            'search_results.html',
+            'index.html',
             page_title=title,
             vacancies=vacancies_searched,
-            search_form=search_form,
-            search_word=search_word,
-            convert_unixtime=strtime_from_unixtime
+            search_form=search,
         )
 
     return app

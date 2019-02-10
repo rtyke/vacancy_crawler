@@ -4,14 +4,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
 
-engine = create_engine('postgres://localhost/vacancies', echo=False)
+engine = create_engine('postgres://localhost/7799', echo=False)
 if not database_exists(engine.url):
     create_database(engine.url)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
+session = scoped_session(sessionmaker(autocommit=False,
+                                      autoflush=False,
+                                      bind=engine))
 Base = declarative_base()
-Base.query = db_session.query_property()
+Base.query = session.query_property()
 
 
 vac_spec = Table(
@@ -25,7 +25,6 @@ vac_spec = Table(
 class Vacancy(Base):
     __tablename__ = 'vacancies'
     id = Column(Integer, primary_key=True)
-    # hash = None  # how to create?
     id_on_site = Column(Integer, index=True, unique=True)
     title = Column(Text, nullable=False)
     published_date = Column(DateTime)
@@ -101,12 +100,12 @@ def fill_in_fields_handbook():
     advert = Field(3, 234, 'Маркетинг, реклама, PR')
     accoutant = Field(2, 11, 'Бухгалтерия')
     hr = Field(6, 76, 'Управление персоналом, тренинги')
-    db_session.add(it)
-    db_session.add(medicine)
-    db_session.add(banks)
-    db_session.add(insurance)
-    db_session.add(law)
-    db_session.add(advert)
-    db_session.add(accoutant)
-    db_session.add(hr)
-    db_session.commit()
+    session.add(it)
+    session.add(medicine)
+    session.add(banks)
+    session.add(insurance)
+    session.add(law)
+    session.add(advert)
+    session.add(accoutant)
+    session.add(hr)
+    session.commit()

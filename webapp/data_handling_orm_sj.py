@@ -1,7 +1,7 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 from flask import current_app
-from webapp.models import Vacancy, db_session, Field
+from webapp.models import Vacancy, session, Field, vac_spec
 from webapp.utils import isotime_from_unixtime, current_isotime
 
 
@@ -18,18 +18,6 @@ def get_first_metro_station(vacancy):
         return vacancy['metro'][0]['title']
     else:
         return None
-
-
-def search_vacancies_by_word(word):
-    pattern = f'%{str.lower(word)}%'
-    # TODO add exceptions
-    vacancies_matched = Vacancy.query.filter(or_(
-        Vacancy.title.ilike(pattern),
-        Vacancy.description.ilike(pattern),
-
-    ))
-    print(vacancies_matched)
-    return vacancies_matched
 
 
 def put_vacancy_to_db(vacancy):
@@ -65,5 +53,5 @@ def put_vacancy_to_db(vacancy):
 
         vacancy_orm.field = vacancy_fields_objects
 
-        db_session.add(vacancy_orm)
-        db_session.commit()
+        session.add(vacancy_orm)
+        session.commit()
