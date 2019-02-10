@@ -3,6 +3,13 @@ from sqlalchemy import or_, func
 from webapp.models import Vacancy
 
 
+def print_vacancies_on_page(page, vacancies_per_page=10):
+    start = vacancies_per_page*(page-1)
+    end = vacancies_per_page*page
+    print(start, end, end-start)
+    return Vacancy.query.order_by(Vacancy.published_date.desc()).slice(start, end)
+
+
 def search_by_word(pattern):
     title_match = Vacancy.title.ilike(pattern)
     description_match = Vacancy.description.ilike(pattern)
